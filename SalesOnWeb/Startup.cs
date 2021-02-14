@@ -28,11 +28,11 @@ namespace SalesOnWeb {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-    services.AddDbContext<SalesOnWebContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("SalesOnWebContext")));
+            services.AddDbContext<SalesOnWebContext>(options =>
+            options.UseMySql(Configuration.GetConnectionString("SalesOnWebContext"), builder =>
+            builder.MigrationsAssembly("SalesOnWeb")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
