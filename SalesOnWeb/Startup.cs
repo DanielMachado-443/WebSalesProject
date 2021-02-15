@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SalesOnWeb.Models;
+using SalesOnWeb.Data;
 
 namespace SalesOnWeb {
     public class Startup {
@@ -33,16 +34,19 @@ namespace SalesOnWeb {
             services.AddDbContext<SalesOnWebContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("SalesOnWebContext"), builder =>
             builder.MigrationsAssembly("SalesOnWeb")));
+
+            services.AddScoped<SeedingService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
-            if (env.IsDevelopment()) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seedingService) { // MATCHS WITH THE METHOD CALLED ABOVE
+            if (env.IsDevelopment()) { // <<< developing profile
                 app.UseDeveloperExceptionPage();
+                seedingService.Seed();
             }
             else {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseExceptionHandler("/Home/Error"); // <<< production profile
+                app.UseHsts();                
             }
 
             app.UseHttpsRedirection();
