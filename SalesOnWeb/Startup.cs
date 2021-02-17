@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SalesOnWeb.Models;
 using SalesOnWeb.Data;
+using SalesOnWeb.Services;
 
 namespace SalesOnWeb {
     public class Startup {
@@ -36,13 +37,14 @@ namespace SalesOnWeb {
             builder.MigrationsAssembly("SalesOnWeb")));
 
             services.AddScoped<SeedingService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
+            services.AddScoped<SellerService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seedingService) { // MATCHS WITH THE METHOD CALLED ABOVE
             if (env.IsDevelopment()) { // <<< developing profile
                 app.UseDeveloperExceptionPage();
-                seedingService.Seed();
+                seedingService.Seed(); // << IMPLEMENTED METHOD. THIS CHECKS IF THE DATA HAS BEEN ALREADY PROVIDED BEFORE START SEEDING AGAIN
             }
             else {
                 app.UseExceptionHandler("/Home/Error"); // <<< production profile
