@@ -11,7 +11,7 @@ namespace SalesOnWeb.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly SalesOnWebContext _context;
+        private readonly SalesOnWebContext _context;        
 
         public DepartmentsController(SalesOnWebContext context)
         {
