@@ -17,6 +17,9 @@ namespace SalesOnWeb.Services {
         }
 
         public void Insert(Seller obj) {
+
+            obj.Department = _context.Department.First(); // << in order to prevent the error that would occur in case of the obj (Seller) not having a Department on the instantiantion step
+
             _context.Add(obj);
             _context.SaveChanges();
         }
