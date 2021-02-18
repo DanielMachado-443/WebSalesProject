@@ -10,7 +10,7 @@ using SalesOnWeb.Models.ViewModels;
 namespace SalesOnWeb.Controllers {
     public class SellersController : Controller {
 
-        private readonly SellerService _sellerService;
+        private readonly SellerService _sellerService; // <<<<<< Dependency Injection
         private readonly DepartmentService _departmentService;
 
         public SellersController(SellerService sellerService, DepartmentService departmentService) {
@@ -33,6 +33,25 @@ namespace SalesOnWeb.Controllers {
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller) { // MATCHING WITH THE asp-action "Create" of the Create view page in views
             _sellerService.Insert(seller);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int? id) { // optional parameter
+            if(id == null) {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+            if(obj == null) {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id) {
+            _sellerService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
     }
