@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SalesOnWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesOnWeb.Services {
     public class SellerService {
@@ -17,7 +18,7 @@ namespace SalesOnWeb.Services {
         }
 
         public Seller FindById(int id) {
-            return _context.Seller.FirstOrDefault(obj => obj.Id == id);
+            return _context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id); // << added include in order to pick the Deparment from the obj
         }
 
         public void Remove(int id) {
