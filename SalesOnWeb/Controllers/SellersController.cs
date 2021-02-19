@@ -34,6 +34,11 @@ namespace SalesOnWeb.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller) { // MATCHING WITH THE asp-action "Create" of the Create view page in views
+            if (!ModelState.IsValid) { // <<< C# VALIDATION PROCESS TO THE CASE OF JS BEING DEACTIVATED ON THE CLIENT SIDE
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments }; // <<< HERE WE CANT JUST PASS THE Seller to the View METHOD
+                return View(viewModel);
+            }
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -87,6 +92,12 @@ namespace SalesOnWeb.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller) {
+            if (!ModelState.IsValid) { // <<< C# VALIDATION PROCESS TO THE CASE OF JS BEING DEACTIVATED ON THE CLIENT SIDE
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments }; // <<< HERE WE CANT JUST PASS THE Seller to the View METHOD
+                return View(viewModel);                
+            }
+
             if (id != seller.Id) {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
