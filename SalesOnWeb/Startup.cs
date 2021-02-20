@@ -41,6 +41,7 @@ namespace SalesOnWeb {
             services.AddScoped<SeedingService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
             services.AddScoped<SellerService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
             services.AddScoped<DepartmentService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
+            services.AddScoped<SalesRecordService>(); // <<< REGISTERED IN THE DEPENDENCY INJECTION SYSTEM OF THIS APPLICATION
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
